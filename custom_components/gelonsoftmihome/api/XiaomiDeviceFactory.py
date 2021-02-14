@@ -2,7 +2,7 @@ import inspect
 import sys
 import logging
 
-from gelonsoftmihome.api.devices import AbstractMiDevice
+from custom_components.gelonsoftmihome.api.devices import AbstractMiDevice
 
 
 class XiaomiDeviceFactory:

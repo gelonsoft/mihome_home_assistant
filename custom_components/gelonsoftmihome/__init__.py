@@ -6,7 +6,7 @@ from datetime import timedelta
 from homeassistant.const import CONF_USERNAME, CONF_PASSWORD, CONF_SCAN_INTERVAL, CONF_FILE_PATH
 from homeassistant.helpers import discovery
 
-from gelonsoftmihome.api.XiaomiHAPlugin import XiaomiHAPlugin
+from custom_components.gelonsoftmihome.api.XiaomiHAPlugin import XiaomiHAPlugin
 
 DOMAIN = 'gelonsoftmihome'
 GELONSOFTMIHOME_API = 'gelonsoftmihome'

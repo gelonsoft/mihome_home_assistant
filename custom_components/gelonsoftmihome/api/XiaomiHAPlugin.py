@@ -1,7 +1,7 @@
 import logging
-from gelonsoftmihome.api.XiaomiCloudConnector import XiaomiCloudConnector
-from gelonsoftmihome.api.XiaomiDeviceFactory import XiaomiDeviceFactory
-from gelonsoftmihome.api.devices import AbstractMiDevice
+from custom_components.gelonsoftmihome.api.XiaomiCloudConnector import XiaomiCloudConnector
+from custom_components.gelonsoftmihome.api.XiaomiDeviceFactory import XiaomiDeviceFactory
+from custom_components.gelonsoftmihome.api.devices import AbstractMiDevice
 
 servers = ["cn", "de", "us", "ru", "tw", "sg", "in", "i2"]
 
