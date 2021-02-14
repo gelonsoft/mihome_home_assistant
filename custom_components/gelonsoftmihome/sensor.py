@@ -41,7 +41,7 @@ class GelonsoftMiHomeSensor(Entity):
         """Return the state of the sensor."""
         state = STATE_UNKNOWN
         if self._sensor_type == TEMP_SENSOR:
-            state = self._device.temperature
+            state = self._device.temperature()
 
         return state if self._device.isOnline else STATE_UNKNOWN
 
