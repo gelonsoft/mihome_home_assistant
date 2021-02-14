@@ -20,7 +20,7 @@ class zhimi_airpurifier_m1(AbstractMiDevice.AbstractMiDevice):
     def convert_to_ha_devices(self):
         result = {}
         if self.isOnline:
-            result['sensor'] = {type: self.devtype, 'guid': self.did}
+            result['sensor']=[{'type': self.devtype, 'guid': self.did}]
         return result
 
     def temperature(self):
