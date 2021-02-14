@@ -1,4 +1,5 @@
 """Platform for sensor integration."""
+import json
 import logging
 from homeassistant.const import TEMP_CELSIUS, STATE_UNKNOWN
 from homeassistant.helpers.entity import Entity
@@ -17,6 +18,7 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
         return
     devices = []
     for device in discovery_info:
+        _LOGGER.warning("Device: %s",json.dumps(device))
         if device["type"] == 'gelonsoftmihome.zhimi.airpurifier.m1':
             devices.append(GelonsoftMiHomeSensor(api, device["guid"], TEMP_SENSOR))
     add_entities(devices)
