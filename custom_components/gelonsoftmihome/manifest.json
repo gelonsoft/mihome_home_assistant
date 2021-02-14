@@ -1,0 +1,11 @@
+
+{
+  "domain": "gelonsoftmihome",
+  "name": "GelonsoftMiHome",
+  "documentation": "https://github.com/gelonsoft/mihome_home_assistant",
+  "requirements": [
+  ],
+  "issue_tracker": "https://github.com/gelonsoft/mihome_home_assistant/issues",
+  "dependencies": [],
+  "codeowners": ["gelonsoft"]
+}

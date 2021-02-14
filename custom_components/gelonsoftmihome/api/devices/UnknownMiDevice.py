@@ -1,5 +1,4 @@
 import AbstractMiDevice
-import abc
 
 
 class UnknownMiDevice(AbstractMiDevice):
@@ -11,4 +10,7 @@ class UnknownMiDevice(AbstractMiDevice):
         return "unknown"
 
     def create_device_by_content(self, content):
-        self.load_basic_info_from_content(self)
+        self.load_basic_info_from_content(content)
+
+    def convert_to_ha_devices(self):
+        return None

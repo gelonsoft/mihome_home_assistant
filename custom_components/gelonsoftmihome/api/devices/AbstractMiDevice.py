@@ -19,4 +19,12 @@ class AbstractMiDevice:
         self.name=content['name']
         self.uid=content['uid']
         self.country=content['country']
+        self.isOnline=content['isOnline']
         self.fullcontent=content
+
+    @abc.abstractmethod
+    def convert_to_ha_devices(self):
+        pass
+
+    def update(self):
+        pass

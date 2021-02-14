@@ -1,0 +1,6 @@
+{
+  "name": "GelonsoftMiHome",
+  "country": "RU",
+  "render_readme": false,
+  "domains": ["climate", "sensor"]
+}
