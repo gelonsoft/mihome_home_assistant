@@ -1,7 +1,8 @@
-import AbstractMiDevice
+from . import AbstractMiDevice
+import abc
 
 
-class UnknownMiDevice(AbstractMiDevice):
+class UnknownMiDevice(AbstractMiDevice.AbstractMiDevice):
     def __init__(self):
         pass
 
@@ -9,8 +10,8 @@ class UnknownMiDevice(AbstractMiDevice):
     def model_type():
         return "unknown"
 
-    def create_device_by_content(self, content):
-        self.load_basic_info_from_content(content)
-
     def convert_to_ha_devices(self):
         return None
+
+    def load_from_content(self,content):
+        self.load_basic_info_from_content(content)

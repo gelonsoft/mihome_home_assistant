@@ -4,8 +4,7 @@ class AbstractMiDevice:
         pass
 
     @abc.abstractmethod
-    @staticmethod
-    def model_type():
+    def model_type(self):
         pass
 
 
@@ -24,6 +23,10 @@ class AbstractMiDevice:
 
     @abc.abstractmethod
     def convert_to_ha_devices(self):
+        pass
+
+    @abc.abstractmethod
+    def load_from_content(self, content):
         pass
 
     def update(self):

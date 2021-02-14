@@ -9,7 +9,7 @@ import time
 import requests
 import random
 import yaml
-import Crypto.Hash
+from Crypto.Hash import MD5,SHA256,SHA1
 import pickle
 import gzip
 
@@ -105,7 +105,7 @@ class XiaomiCloudConnector:
 
     def load_from_yaml(self, path):
         if (os.path.exists(path + "-auth.yaml")):
-            with open(path, 'r') as file:
+            with open(path+ "-auth.yaml", 'r') as file:
                 self._auth_data = yaml.safe_load(file)
                 if not self._auth_data:
                     self.reinit_auth_data()
@@ -144,7 +144,7 @@ class XiaomiCloudConnector:
         }
         fields = {
             "sid": "xiaomiio",
-            "hash": (Crypto.Hash.MD5.new(str.encode(self._password)).hexdigest() + "").upper(),
+            "hash": (MD5.new(str.encode(self._password)).hexdigest() + "").upper(),
             "callback": "https://sts.api.io.mi.com/sts",
             "qs": "%3Fsid%3Dxiaomiio%26_json%3Dtrue",
             "user": self._username,
@@ -333,7 +333,7 @@ class XiaomiCloudConnector:
         return "https://" + ("" if country == "cn" else (country + ".")) + "api.io.mi.com/app"
 
     def signed_nonce(self, nonce):
-        hash_object = Crypto.Hash.SHA256.new()
+        hash_object = SHA256.new()
         hash_object.update(base64.b64decode(self._auth_data["ssecurity"]) + base64.b64decode(nonce))
         return base64.b64encode(hash_object.digest()).decode('utf-8')
 
@@ -343,7 +343,7 @@ class XiaomiCloudConnector:
             signature_params.append(f"{k}={v}")
         signature_params.append(signed_nonce)
         signature_string = "&".join(signature_params)
-        s = Crypto.Hash.SHA1.new()
+        s = SHA1.new()
         s.update(signature_string.encode('UTF-8'))
         return base64.b64encode(s.digest())
 

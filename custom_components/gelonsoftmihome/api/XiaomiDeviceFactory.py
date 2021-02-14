@@ -14,17 +14,15 @@ class XiaomiDeviceFactory:
 
     def get_device_classes(self):
         result = {}
-        for name, obj in inspect.getmembers(sys.modules["gelonsoftmihome.api.devices"]):
-            if inspect.isclass(obj) and issubclass(obj, type(AbstractMiDevice)) and name != "AbstractMiDevice":
-                try:
-                    print(name)
-                    print(obj)
-                    print(type(obj))
-                    model = obj.model
-                    result[model] = obj
-                    self.logger.info("Registered model %s as device type %s", model, obj)
-                except:
-                    pass
+        for mod_name, mod_obj in inspect.getmembers(sys.modules["custom_components.gelonsoftmihome.api.devices"]):
+             for name, obj in inspect.getmembers(sys.modules.get("custom_components.gelonsoftmihome.api.devices."+mod_name),inspect.isclass):
+                if inspect.isclass(obj) and issubclass(obj, AbstractMiDevice.AbstractMiDevice) and name != "AbstractMiDevice":
+                    try:
+                        model = obj.model_type()
+                        result[model] = obj
+                        self.logger.info("Registered model %s as device type %s", model, obj)
+                    except:
+                        pass
         return result
 
     def create_device_by_model(self, model):

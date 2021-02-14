@@ -47,11 +47,13 @@ class XiaomiHAPlugin:
                 device_instance = self.device_factory.create_device_by_content(device)
                 if device_instance:
                     self.internal_devices.append(device_instance)
-                    for ha_device_type,ha_devices in device_instance.convert_to_ha_devices():
-                        if not self.ha_devices[ha_device_type]:
-                            self.ha_devices[ha_device_type]=[]
-                        for ha_device in ha_devices:
-                            self.ha_devices[ha_device_type].append(ha_device)
+                    ha_devs = device_instance.convert_to_ha_devices()
+                    if ha_devs:
+                        for ha_device_type,ha_devices in ha_devs.items():
+                            if not self.ha_devices.get(ha_device_type):
+                                self.ha_devices[ha_device_type]=[]
+                            for ha_device in ha_devices:
+                                self.ha_devices[ha_device_type].append(ha_device)
         else:
             self.logger.error("XiaomiCloudConnector is not logged in")
 
