@@ -5,7 +5,7 @@ import logging
 class zhimi_airpurifier_m1(AbstractMiDevice.AbstractMiDevice):
     def __init__(self):
         self.logger = logging.getLogger(__name__)
-        self.type = 'gelonsoftmihome.' + self.model_type()
+        self.devtype = 'gelonsoftmihome.' + self.model_type()
         self.isOnline = False
         self._temperature = None
         pass
@@ -15,12 +15,12 @@ class zhimi_airpurifier_m1(AbstractMiDevice.AbstractMiDevice):
         return "zhimi.airpurifier.m1"
 
     def get_id(self):
-        return self.type + ":" + self.did
+        return self.devtype + ":" + self.did
 
     def convert_to_ha_devices(self):
         result = {}
         if self.isOnline:
-            result['sensor'] = {type: self.type, 'guid': self.did}
+            result['sensor'] = {type: self.devtype, 'guid': self.did}
         return result
 
     def temperature(self):
