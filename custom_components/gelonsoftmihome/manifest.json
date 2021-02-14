@@ -4,7 +4,10 @@
   "name": "GelonsoftMiHome",
   "documentation": "https://github.com/gelonsoft/mihome_home_assistant",
   "requirements": [
-    "Crypto>=0.0.1",
+    "cryptography~=3.2",
+    "requests~=2.25.1",
+    "bcrypt~=3.1.7",
+    "pybase64~=1.1.4",
     "PyYAML~=5.4.1"
   ],
   "issue_tracker": "https://github.com/gelonsoft/mihome_home_assistant/issues",
