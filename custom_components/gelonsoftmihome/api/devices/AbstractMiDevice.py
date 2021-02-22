@@ -88,14 +88,14 @@ class AbstractMiDevice:
                 _data['datasource'] = 3
                 result = self._cloud_connector.get_device_data_miot(self.country, _data)
                 self.logger.warning("Device %s update data is %s", self.did, json.dumps(result))
-                self.logger.debug("Device %s update type_map is %s", self.did, json.dumps(self._type_map))
+                self.logger.warning("Device %s update type_map is %s", self.did, json.dumps(self._type_map))
                 for r in result:
                     if r.get('code') == 0:
                         _type = self._type_map.get(f"{r.get('siid')}.{r.get('piid')}")
                         if _type is not None:
                             self._values_cache[_type] = r.get('value')
                 self._last_update_time = datetime.datetime.now()
-                self.logger.debug("Device %s updated with %s", self.did, json.dumps(self._values_cache))
+                self.logger.warning("Device %s updated with %s", self.did, json.dumps(self._values_cache))
             finally:
                 self._not_in_update = True
 
