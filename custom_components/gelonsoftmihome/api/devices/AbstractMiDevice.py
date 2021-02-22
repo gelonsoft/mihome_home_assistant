@@ -57,7 +57,15 @@ class AbstractMiDevice:
     def set_spec(self, spec):
         self._spec = spec
 
-    def identify_units(self, props) -> Optional[str]:
+    def get_ha_device_info(self):
+        return {"identifiers": {
+            self.did
+        },
+            "name": self.name,
+            "model": self.model
+        }
+
+    def identify_ha_units(self, props) -> Optional[str]:
         result = None
         unit = props.get('punit')
         if unit is not None:
@@ -106,9 +114,9 @@ class AbstractMiDevice:
                     val = {}
                     val['type'] = _type
                     val['did'] = self.did
-                    val['unique_id'] = None  # f"x{_type}.{self.did}"
+                    val['unique_id'] = f"x{_type}.{self.did}"
                     val['name'] = f"{self.name} {p.get('pdescription')} - {p.get('sdescription')}"
-                    val['units'] = self.identify_units(p)
+                    val['units'] = self.identify_ha_units(p)
                     result['sensor'].append(val)
         return result
 

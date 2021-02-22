@@ -35,11 +35,16 @@ class GelonsoftMiHomeSensor(Entity):
         self._device_id = f"{DOMAIN}.{_device.did}"
         self._units = device_info.get('units')
         self._name = device_info.get('name')
+        self._device_info = _device.get_ha_device_info()
 
     @property
     def name(self):
         """Return the name of the sensor."""
         return self._name
+
+    @property
+    def device_info(self):
+        return self._device_info
 
     @property
     def unique_id(self):
