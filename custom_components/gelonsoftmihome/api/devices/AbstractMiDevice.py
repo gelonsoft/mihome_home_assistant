@@ -85,6 +85,7 @@ class AbstractMiDevice:
                     _type = 'gelonsoftmihome.' + p.get('id')
                     _data['params'].append({'did': self.did, 'siid': p.get('siid'), 'piid': p.get('piid')})
                 result = self._cloud_connector.get_device_data_miot(self.country, _data)
+                self.logger.warning("Device %s update data is %s", self.did, json.dumps(result))
                 for r in result:
                     if r.get('code') == 0:
                         _type = self._type_map.get(f"{r.get('piid')}.{r.get('piid')}")
