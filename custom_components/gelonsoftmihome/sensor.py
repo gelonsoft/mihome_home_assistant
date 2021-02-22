@@ -13,6 +13,7 @@ _LOGGER = logging.getLogger(__name__)
 
 TEMP_SENSOR = {"unit": TEMP_CELSIUS, "name": "temperature"}
 
+
 def setup_platform(hass, config, add_entities, discovery_info=None):
     """Set up the sensor platform."""
     api = hass.data[GELONSOFTMIHOME_API]
@@ -45,13 +46,14 @@ class GelonsoftMiHomeSensor(Entity):
         v = self._device.get_value(self._type)
         if v is not None:
             state = v
+            _LOGGER.warning("Device %s updated with %s", self.name, v)
         return state if self._device.isOnline else STATE_UNKNOWN
 
     @property
     def unit_of_measurement(self):
         """Return the unit of measurement."""
         return None
-        #return self._sensor_type["unit"] if self._device.isOnline else None
+        # return self._sensor_type["unit"] if self._device.isOnline else None
 
     def update(self):
         """Fetch new state data for the sensor.

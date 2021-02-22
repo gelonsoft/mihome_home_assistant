@@ -1,11 +1,14 @@
 import abc
 import datetime
+import json
+import logging
 
 from custom_components.gelonsoftmihome.api.XiaomiCloudConnector import XiaomiCloudConnector
 
 
 class AbstractMiDevice:
     def __init__(self):
+        self.logger = logging.getLogger(__name__)
         self._spec = None
         self.did = None
         self.model = None
@@ -88,6 +91,7 @@ class AbstractMiDevice:
                         if _type is not None:
                             self._values_cache[_type] = r.get('value')
                 self._last_update_time = datetime.datetime.now()
+                self.logger.warning("Device %s updated with %s", self.did, json.dumps(self._values_cache))
             finally:
                 self._not_in_update = True
 
