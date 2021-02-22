@@ -2,6 +2,7 @@ import abc
 import datetime
 import json
 import logging
+from typing import Optional
 
 from custom_components.gelonsoftmihome.api.XiaomiCloudConnector import XiaomiCloudConnector
 
@@ -56,6 +57,42 @@ class AbstractMiDevice:
     def set_spec(self, spec):
         self._spec = spec
 
+    def identify_units(self, props) -> Optional[str]:
+        result = None
+        unit = props.get('punit')
+        if unit is not None:
+            if unit == "celsius":
+                result = "°C"
+            if unit == "hours":
+                result = "h"
+            if unit == "percentage":
+                result = "%"
+            if unit == "seconds":
+                result = "s"
+            if unit == "minutes":
+                result = "min"
+            if unit == "days":
+                result = "d"
+            if unit == "kelvin":
+                result = "K"
+            if unit == "pascal":
+                result = "Pa"
+            if unit == "arcdegrees":
+                result = "°"
+            if unit == "rgb":
+                result = None
+            if unit == "watt":
+                result = "W"
+            if unit == "litre":
+                result = "L"
+            if unit == "ppm":
+                result = "ppm"
+            if unit == "lux":
+                result = "lx"
+            if unit == "mg/m3":
+                result = "mg/m³"
+        return result
+
     def basic_convert_to_ha_devices(self):
         result = {}
         if self.isOnline:
@@ -66,7 +103,13 @@ class AbstractMiDevice:
                     _type = 'gelonsoftmihome.' + p.get('id')
                     self._values_cache[_type] = None
                     self._type_map[f"{p.get('siid')}.{p.get('piid')}"] = _type
-                    result['sensor'].append({'type': _type, 'did': self.did, 'unique_id': _type + "." + self.did})
+                    val = {}
+                    val['type'] = _type
+                    val['did'] = self.did
+                    val['unique_id'] = _type + "." + self.did
+                    val['name'] = f"{self.name} {p.get('pdescription')} - {p.get('sdescription')}"
+                    val['units'] = self.identify_units(p)
+                    result['sensor'].append(val)
         return result
 
     def get_value(self, _type):

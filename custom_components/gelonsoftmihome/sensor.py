@@ -11,8 +11,6 @@ from .const import DOMAIN, GELONSOFTMIHOME_API
 
 _LOGGER = logging.getLogger(__name__)
 
-TEMP_SENSOR = {"unit": TEMP_CELSIUS, "name": "temperature"}
-
 
 def setup_platform(hass, config, add_entities, discovery_info=None):
     """Set up the sensor platform."""
@@ -23,21 +21,33 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
     for device in discovery_info:
         _LOGGER.warning("Device: %s", device)
         _device = api.get_device_by_did(did=device.get("did"))
-        devices.append(GelonsoftMiHomeSensor(api, _device, device.get("type")))
+        devices.append(GelonsoftMiHomeSensor(api, _device, device))
     add_entities(devices)
 
 
 class GelonsoftMiHomeSensor(Entity):
     """Representation of a Sensor."""
 
-    def __init__(self, api, _device: AbstractMiDevice, _type):
+    def __init__(self, api, _device: AbstractMiDevice, device_info):
         self._device = _device
-        self._type = _type
+        self._type = device_info.get('type')
+        self._unique_id = device_info.get('unique_id')
+        self._device_id = f"{DOMAIN}.{_device.did}"
 
     @property
     def name(self):
         """Return the name of the sensor."""
-        return f"{self._device.name} {self._type}"
+        return f"{self._device.name} {self._type.replace(DOMAIN + '.', '')}"
+
+    @property
+    def unique_id(self):
+        """Return a unique ID."""
+        return self._unique_id
+
+    @property
+    def device_id(self):
+        """Return a unique ID."""
+        return self._device_id
 
     @property
     def state(self):
@@ -46,7 +56,7 @@ class GelonsoftMiHomeSensor(Entity):
         v = self._device.get_value(self._type)
         if v is not None:
             state = v
-            _LOGGER.warning("Device %s updated with %s", self.name, v)
+            _LOGGER.debug("Device %s updated with %s", self.name, v)
         return state if self._device.isOnline else STATE_UNKNOWN
 
     @property
