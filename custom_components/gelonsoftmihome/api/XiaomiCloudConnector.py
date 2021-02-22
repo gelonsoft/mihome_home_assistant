@@ -59,6 +59,8 @@ class XiaomiCloudConnector:
         self._last_login_time = None
         self._min_seconds_between_login = 30
         self._state = 0
+        self._spec_cache={}
+        self._specs=None
         if not self._auth_data["logged_in"]:
             self.login()
 
@@ -210,12 +212,10 @@ class XiaomiCloudConnector:
         }
         return self.execute_api_call(url, params)
 
-    def get_device_datas(self, country):
-        url = self.get_api_url(country) + "/device/batchdevicedatas"
-        params = {
-            "data": '[{"did":"blt.3.1153bjkholc00","props":["prop.s_auth_config"]}]'
-        }
-        return self.execute_api_call(url, params)
+    def get_device_data_miot(self, country, params):
+        result = self.execute_mi_api("/miotspec/prop/get",country, {"data": json.dumps(params)})
+        result = result.get('result')
+        return result
 
     def get_user_get_user_device_data(self, country):
         url = self.get_api_url(country) + "/user/get_user_device_data"
@@ -377,3 +377,45 @@ class XiaomiCloudConnector:
     @staticmethod
     def to_json(response_text):
         return json.loads(response_text.replace("&&&START&&&", ""))
+
+    def get_device_spec(self, model: str) -> dict:
+        result = self._spec_cache.get(model)
+        if result is None:
+            result = {}
+            if self._specs is None:
+                response = self._session.get(url='http://miot-spec.org/miot-spec-v2/instances?status=released')
+                self._specs=response.json().get('instances')
+            type = None
+            try:
+                type = [x for x in self._specs if x.get('model') == model][0].get('type')
+            except:
+                pass
+            if (type is not None):
+                response = self._session.get(url=f"http://miot-spec.org/miot-spec-v2/instance?type={type}")
+                props = []
+                try:
+                    for s in response.json().get('services'):
+                        siid = s.get('iid')
+                        sname = s.get('type').split(':')[3]
+                        sdescription = s.get('description')
+                        for p in s.get('properties'):
+                            prop = {}
+                            prop['siid'] = siid
+                            prop['sname'] = sname
+                            prop['sdescription'] = sdescription
+                            prop['piid'] = p.get('iid')
+                            p_name = p.get('type').split(':')[3]
+                            prop['pname'] = p_name
+                            prop['pformat'] = p.get('format')
+                            prop['paccess'] = p.get('access')
+                            prop['pvaluelist'] = p.get('value-list')
+                            prop['punit'] = p.get('unit')
+                            prop['pvaluerange'] = p.get('value-range')
+                            prop['pdescription'] = p.get('description')
+                            prop['id'] = sname + "." + p_name
+                            props.append(prop)
+                except:
+                    pass
+                result={'properties': props}
+                self._spec_cache[model]=result
+        return result

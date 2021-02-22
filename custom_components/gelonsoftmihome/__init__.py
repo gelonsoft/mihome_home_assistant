@@ -7,9 +7,10 @@ from homeassistant.const import CONF_USERNAME, CONF_PASSWORD, CONF_SCAN_INTERVAL
 from homeassistant.helpers import discovery
 
 from custom_components.gelonsoftmihome.api.XiaomiHAPlugin import XiaomiHAPlugin
+from .const import DOMAIN, GELONSOFTMIHOME_API
 
-DOMAIN = 'gelonsoftmihome'
-GELONSOFTMIHOME_API = 'gelonsoftmihome'
+
+
 
 DEFAULT_SCAN_INTERVAL = timedelta(minutes=10)
 DEFAULT_AUTH_FNAME = "gelonsoftmihome_auth"
