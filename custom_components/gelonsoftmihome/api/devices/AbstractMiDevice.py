@@ -85,6 +85,7 @@ class AbstractMiDevice:
                 for p in self._spec.get('properties'):
                     _type = 'gelonsoftmihome.' + p.get('id')
                     _data['params'].append({'did': self.did, 'siid': p.get('siid'), 'piid': p.get('piid')})
+                _data['datasource'] = 3
                 result = self._cloud_connector.get_device_data_miot(self.country, _data)
                 self.logger.warning("Device %s update data is %s", self.did, json.dumps(result))
                 self.logger.debug("Device %s update type_map is %s", self.did, json.dumps(self._type_map))
