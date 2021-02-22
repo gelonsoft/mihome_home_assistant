@@ -33,11 +33,13 @@ class GelonsoftMiHomeSensor(Entity):
         self._type = device_info.get('type')
         self._unique_id = device_info.get('unique_id')
         self._device_id = f"{DOMAIN}.{_device.did}"
+        self._units = device_info.get('units')
+        self._name = device_info.get('name')
 
     @property
     def name(self):
         """Return the name of the sensor."""
-        return f"{self._device.name} {self._type.replace(DOMAIN + '.', '')}"
+        return self._name
 
     @property
     def unique_id(self):
@@ -62,7 +64,7 @@ class GelonsoftMiHomeSensor(Entity):
     @property
     def unit_of_measurement(self):
         """Return the unit of measurement."""
-        return None
+        return self._units
         # return self._sensor_type["unit"] if self._device.isOnline else None
 
     def update(self):
