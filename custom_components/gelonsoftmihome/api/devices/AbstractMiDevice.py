@@ -67,7 +67,10 @@ class AbstractMiDevice:
         return result
 
     def get_value(self, _type):
-        return self._values_cache[_type]
+        if _type is not None:
+            return self._values_cache[_type]
+        else:
+            return None
 
     def update(self):
         if self.can_update() and self._not_in_update:

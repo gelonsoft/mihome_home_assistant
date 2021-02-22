@@ -21,7 +21,7 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
     devices = []
     for device in discovery_info:
         _LOGGER.warning("Device: %s", device)
-        _device=api.get_device_by_did(did=device.get("did"))
+        _device = api.get_device_by_did(did=device.get("did"))
         devices.append(GelonsoftMiHomeSensor(api, _device, device.get("type")))
     add_entities(devices)
 
@@ -42,8 +42,9 @@ class GelonsoftMiHomeSensor(Entity):
     def state(self):
         """Return the state of the sensor."""
         state = STATE_UNKNOWN
-        v = self._device.get_value(self._device.get_value(self._type))
-
+        v = self._device.get_value(self._type)
+        if v is not None:
+            state = v
         return state if self._device.isOnline else STATE_UNKNOWN
 
     @property
