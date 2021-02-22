@@ -124,21 +124,21 @@ class AbstractMiDevice:
                 self._not_in_update = False
                 _data = {}
                 _data['params'] = []
-                self.logger.warning("Device %s update started", self.did)
+                self.logger.debug("Device %s update started", self.did)
                 for p in self._spec.get('properties'):
                     _type = 'gelonsoftmihome.' + p.get('id')
                     _data['params'].append({'did': self.did, 'siid': p.get('siid'), 'piid': p.get('piid')})
                 _data['datasource'] = 3
                 result = self._cloud_connector.get_device_data_miot(self.country, _data)
-                self.logger.warning("Device %s update data is %s", self.did, json.dumps(result))
-                self.logger.warning("Device %s update type_map is %s", self.did, json.dumps(self._type_map))
+                self.logger.debug("Device %s update data is %s", self.did, json.dumps(result))
+                self.logger.debug("Device %s update type_map is %s", self.did, json.dumps(self._type_map))
                 for r in result:
                     if r.get('code') == 0:
                         _type = self._type_map.get(f"{r.get('siid')}.{r.get('piid')}")
                         if _type is not None:
                             self._values_cache[_type] = r.get('value')
                 self._last_update_time = datetime.datetime.now()
-                self.logger.warning("Device %s updated with %s", self.did, json.dumps(self._values_cache))
+                self.logger.debug("Device %s updated with %s", self.did, json.dumps(self._values_cache))
             finally:
                 self._not_in_update = True
 

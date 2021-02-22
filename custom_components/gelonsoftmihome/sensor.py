@@ -19,7 +19,7 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
         return
     devices = []
     for device in discovery_info:
-        _LOGGER.warning("Device: %s", device)
+        _LOGGER.debug("Device setup_platform: %s", device)
         _device = api.get_device_by_did(did=device.get("did"))
         devices.append(GelonsoftMiHomeSensor(api, _device, device))
     add_entities(devices)

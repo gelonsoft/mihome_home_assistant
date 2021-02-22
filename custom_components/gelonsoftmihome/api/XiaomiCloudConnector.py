@@ -275,7 +275,7 @@ class XiaomiCloudConnector:
         if response.status_code == 401:
             self.logger.warning("Handled auth error")
             if self.login():
-                self.logger.warning("Second try of request")
+                self.logger.info("Second try of request")
                 return self.execute_api_call(url, params)
             else:
                 self.logger.error("Xiaomi login failed, skipping request to url %s", url)
