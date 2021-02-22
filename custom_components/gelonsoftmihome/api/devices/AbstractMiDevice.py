@@ -106,7 +106,7 @@ class AbstractMiDevice:
                     val = {}
                     val['type'] = _type
                     val['did'] = self.did
-                    val['unique_id'] = _type + "." + self.did
+                    val['unique_id'] = None  # f"x{_type}.{self.did}"
                     val['name'] = f"{self.name} {p.get('pdescription')} - {p.get('sdescription')}"
                     val['units'] = self.identify_units(p)
                     result['sensor'].append(val)
